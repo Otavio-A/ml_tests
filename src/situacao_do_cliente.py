@@ -4,6 +4,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.svm import LinearSVC
 from sklearn.multiclass import OneVsRestClassifier
+from sklearn.multiclass import OneVsOneClassifier
 
 def fit_and_predict(nome, modelo, trenio_dados, treino_marcacoes,
                     teste_dados, teste_marcacoes):
@@ -58,7 +59,7 @@ def teste_real(nome, modelo, validacao_dados, validacao_marcacoes):
 # busca: 85,71% (8 testes)
 
 # Lê o arquivo.
-df = pd.read_csv('../dataset/situacao_do_cliente.csv')
+df = pd.read_csv('../datasets/situacao_do_cliente.csv')
 
 # Data Frame
 ## A coluna 'busca' tem mais relevância na classificação.
@@ -102,6 +103,11 @@ resultadoOneVsRest = fit_and_predict("OneVsRest", modeloOneVsRest, treino_dados,
 treino_marcacoes, teste_dados, teste_marcacoes)
 resultados[resultadoOneVsRest] = (modeloOneVsRest, "OneVsRest")
 
+modeloOneVsOne = OneVsOneClassifier(LinearSVC(random_state=0, max_iter=10000))
+resultadoOneVsOne = fit_and_predict("OneVsOne", modeloOneVsOne, treino_dados,
+treino_marcacoes, teste_dados, teste_marcacoes)
+resultados[resultadoOneVsOne] = (modeloOneVsOne, "OneVsOne")
+
 # Teste com o MultinomialNB
 modeloMultinomial = MultinomialNB()
 resultadoMultinomial = fit_and_predict("MultinomialNB", modeloMultinomial, treino_dados,
@@ -114,6 +120,7 @@ resultadoAdaBoost = fit_and_predict("AdaBoostClassifier", modeloAdaBoost, treino
 treino_marcacoes, teste_dados, teste_marcacoes)
 resultados[resultadoAdaBoost] = (modeloAdaBoost,"AdaBoostClassifier")
 
+# Pega o modelo que obteve o maior resultado
 maior_resultado = max(resultados)
 modelo_vencedor, nome = resultados[maior_resultado]
 
