@@ -3,6 +3,13 @@ import pandas as pd
 
 from collections import Counter
 
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.multiclass import OneVsRestClassifier, OneVsOneClassifier
+from sklearn.svm import LinearSVC
+
+from utils import fit_and_predict
+
 classificacoes = pd.read_csv('../datasets/emails.csv')
 textos_puros = classificacoes['email']
 textos_quebrados = textos_puros.str.lower().str.split(' ')
@@ -34,3 +41,23 @@ def vetorizar_textos(texto, dicionario):
 
 # vetoriza os textos
 vetores_de_texto = [vetorizar_textos(texto, dicionario) for texto in textos_quebrados]
+
+# Machine Learning
+
+marcacoes = classificacoes['classificacao']
+
+X = vetores_de_texto
+Y = marcacoes
+
+porcentagem_de_treino = 0.8
+
+tamanho_de_treino = int(porcentagem_de_treino * len(Y))
+
+treino_dados = X[:tamanho_de_treino]
+treino_marcacoes = Y[:tamanho_de_treino]
+
+validacao_dados = X[tamanho_de_treino:]
+validacao_marcacoes = Y[tamanho_de_treino:]
+
+
+
