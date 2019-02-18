@@ -9,6 +9,8 @@ from sklearn.svm import LinearSVC
 
 from sklearn.model_selection import cross_val_score
 
+from utils import fit_and_predict_kfold, teste_real
+
 df = pd.read_csv('../datasets/situacao_do_cliente.csv')
 X_df = df[['recencia','frequencia', 'semanas_de_inscricao']]
 Y_df = df['situacao']
@@ -31,70 +33,27 @@ validacao_marcacoes = Y[tamanho_de_treino:]
 
 
 
-def fit_and_predict(nome, modelo, treino_dados, treino_marcacoes):
-    """
-        Utiliza o k-fold para fazer o treino e a previsão do modelo
-
-        Args:
-            nome: Nome do modelo
-            modelo: Modelo do algorimto
-            treino_dados: Dados de treino
-            treino_marcacoes: Marcações de treino
-        Return:
-            taxa_de_acerto: A taxa de acerno do modelo do algoritmo
-    """
-    k = 10
-    scores = cross_val_score(modelo, treino_dados, treino_marcacoes, cv=k)
-    taxa_de_acerto = np.mean(scores)
-
-    msg = f"Taxa de acerto do {nome} : {taxa_de_acerto}"
-    print(msg)
-    return taxa_de_acerto
-
-def teste_real(nome, modelo, validacao_dados, validacao_marcacoes):
-    """
-        Valida o modelo escolhido como vencedor, com dados que nunca viu
-
-        Args:
-            nome: Nome do modelo vencedor
-            modelo: Modelo do algoritmo que foi escolhido como vencedor
-            validacao_dados: Dados inéditos para o modelo vencedor irá prever
-            validacao_marcacao: Marcações usadas para validar o modelo vencedor
-    """
-
-    resultado = modelo.predict(validacao_dados)
-    acertos = (resultado == validacao_marcacoes)
-
-    total_de_acertos = sum(acertos)
-    total_de_elementos = len(validacao_marcacoes)
-    
-    taxa_de_acertos = 100*(total_de_acertos/total_de_elementos)
-    taxa_de_acertos = format(taxa_de_acertos, '.2f')
-
-    msg = f"Algoritmo vencedor: {nome}. Taxa de acerto do algorimto: {taxa_de_acertos}%"
-    print(msg)
-
 # Testas os modelos
 resultados = dict() # guarda os resultados dos modelos
 
 # Teste com OneVsRestClassifier
 modelo_one_vs_rest = OneVsRestClassifier(LinearSVC(random_state = 0, max_iter=10000))
-resultado_one_vs_rest = fit_and_predict("OneVsRest", modelo_one_vs_rest, treino_dados, treino_marcacoes)
+resultado_one_vs_rest = fit_and_predict_kfold("OneVsRest", modelo_one_vs_rest, treino_dados, treino_marcacoes)
 resultados[resultado_one_vs_rest] = {'modelo': modelo_one_vs_rest, 'nome': "OneVsRest"}
 
 # Teste com OneVsRestClassifier
 modelo_one_vs_one = OneVsRestClassifier(LinearSVC(random_state = 0, max_iter=10000))
-resultado_one_vs_one = fit_and_predict("OneVsOne", modelo_one_vs_one, treino_dados, treino_marcacoes)
+resultado_one_vs_one = fit_and_predict_kfold("OneVsOne", modelo_one_vs_one, treino_dados, treino_marcacoes)
 resultados[resultado_one_vs_one] = {'modelo': modelo_one_vs_one, 'nome': "OneVsOne"}
 
 # Teste com MultinomialNB
 modelo_multinomialnb = MultinomialNB()
-resultado_multinomialnb = fit_and_predict("MultinomialNB", modelo_multinomialnb, treino_dados, treino_marcacoes)
+resultado_multinomialnb = fit_and_predict_kfold("MultinomialNB", modelo_multinomialnb, treino_dados, treino_marcacoes)
 resultados[resultado_multinomialnb] = {'modelo': modelo_multinomialnb, 'nome': "MultinomialNB"}
 
 # Teste com AdaBoostClassifier
 modelo_ada_boost = AdaBoostClassifier()
-resultado_ada_boost = fit_and_predict("AdaBoostClassifier", modelo_ada_boost, treino_dados, treino_marcacoes)
+resultado_ada_boost = fit_and_predict_kfold("AdaBoostClassifier", modelo_ada_boost, treino_dados, treino_marcacoes)
 resultados[resultado_ada_boost] = {'modelo': modelo_ada_boost, 'nome': "AdaBoostClassifier"}
 
 # Seleciona o modelo que teve maior resultado nos testes

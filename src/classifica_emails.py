@@ -8,8 +8,6 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.multiclass import OneVsRestClassifier, OneVsOneClassifier
 from sklearn.svm import LinearSVC
 
-from utils import fit_and_predict
-
 classificacoes = pd.read_csv('../datasets/emails.csv')
 textos_puros = classificacoes['email']
 textos_quebrados = textos_puros.str.lower().str.split(' ')

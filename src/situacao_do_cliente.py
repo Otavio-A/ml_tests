@@ -1,56 +1,12 @@
 import pandas as pd
 from collections import Counter
+
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.svm import LinearSVC
-from sklearn.multiclass import OneVsRestClassifier
-from sklearn.multiclass import OneVsOneClassifier
+from sklearn.multiclass import OneVsRestClassifier, OneVsOneClassifier
 
-def fit_and_predict(nome, modelo, trenio_dados, treino_marcacoes,
-                    teste_dados, teste_marcacoes):
-    
-    """
-    Faz o treino e o teste do algorimto
-    """
-
-    # Treina o modelo
-    modelo.fit(treino_dados, treino_marcacoes)
-
-    # Resultado da predição
-    resultado = modelo.predict(teste_dados)
-    # Pega os dados que o modelo acertou
-    acertos = (resultado == teste_marcacoes)
-    # Total de acertos
-    total_de_acertos = sum(acertos)
-    total_de_elementos = len(teste_dados)
-
-    # Eficacia do modelo
-    taxa_de_acertos = 100.0*(total_de_acertos/total_de_elementos)
-    taxa_de_acertos = format(taxa_de_acertos, '.2f')
-
-    # Resultado
-    msg = f'Taxa de acerto do algoritmo {nome} : {taxa_de_acertos}%'
-    print(msg)
-
-    return taxa_de_acertos
-
-def teste_real(nome, modelo, validacao_dados, validacao_marcacoes):
-    
-    """
-    Testa o algoritmo que teve o melhor resultado nos testes.
-    """
-
-    resultado = modelo.predict(validacao_dados)
-    acertos = (resultado == validacao_marcacoes)
-
-    total_de_acertos = sum(acertos)
-    total_de_elementos = len(validacao_marcacoes)
-
-    taxa_de_acertos = 100*(total_de_acertos/total_de_elementos)
-    taxa_de_acertos = format(taxa_de_acertos, '.2f')
-
-    msg = f'Algoritmo vencedor: {nome}. Taxa de acerto do algoritmo: {taxa_de_acertos}%'
-    print(msg)
+from utils import fit_and_predict, teste_real
 
 # teste inicial: home, busca, logado => comprou
 # home, busca
