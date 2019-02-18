@@ -7,6 +7,7 @@ name = "pypi"
 scikit-learn = "*"
 pandas = "*"
 pylint = "*"
+wheel = "*"
 
 [dev-packages]
 pylint = "*"
