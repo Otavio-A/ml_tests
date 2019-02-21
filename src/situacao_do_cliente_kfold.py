@@ -41,7 +41,7 @@ modelo_one_vs_rest = OneVsRestClassifier(LinearSVC(random_state = 0, max_iter=10
 resultado_one_vs_rest = fit_and_predict_kfold("OneVsRest", modelo_one_vs_rest, treino_dados, treino_marcacoes)
 resultados[resultado_one_vs_rest] = {'modelo': modelo_one_vs_rest, 'nome': "OneVsRest"}
 
-# Teste com OneVsRestClassifier
+# Teste com OneVsOneClassifier
 modelo_one_vs_one = OneVsRestClassifier(LinearSVC(random_state = 0, max_iter=10000))
 resultado_one_vs_one = fit_and_predict_kfold("OneVsOne", modelo_one_vs_one, treino_dados, treino_marcacoes)
 resultados[resultado_one_vs_one] = {'modelo': modelo_one_vs_one, 'nome': "OneVsOne"}
