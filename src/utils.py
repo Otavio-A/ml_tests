@@ -73,3 +73,17 @@ def teste_real(nome, modelo, validacao_dados, validacao_marcacoes):
 
     msg = f"Algoritmo vencedor: {nome}. Taxa de acerto do algorimto: {taxa_de_acertos}%"
     print(msg)
+
+def vetorizar_textos(texto, dicionario, stemmer):
+    """
+        Transforma cada texto em um vetor com as ocorrências de cada palavra.
+    """
+    vetor = [0] * len(dicionario)
+    for palavra in texto:
+        if len(palavra) > 0:
+            raiz_palavra = stemmer.stem(palavra)
+            if raiz_palavra in dicionario:
+                posicao = dicionario[raiz_palavra]
+                vetor[posicao] += 1
+
+    return vetor
