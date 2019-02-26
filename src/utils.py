@@ -71,7 +71,7 @@ def teste_real(nome, modelo, validacao_dados, validacao_marcacoes):
     taxa_de_acertos = 100*(total_de_acertos/total_de_elementos)
     taxa_de_acertos = format(taxa_de_acertos, '.2f')
 
-    msg = f"Algoritmo vencedor: {nome}. Taxa de acerto do algorimto: {taxa_de_acertos}%"
+    msg = f"Algoritmo vencedor: {nome} - Taxa de acerto do algorimto: {taxa_de_acertos}%"
     print(msg)
 
 def vetorizar_textos(texto, dicionario, stemmer):

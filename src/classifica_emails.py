@@ -85,7 +85,6 @@ resultados[resultado_ada_boost] = {'modelo': modelo_ada_boost, 'nome': "AdaBoost
 maior_resultado = max(resultados)
 vencedor = resultados[maior_resultado]
 
-print(f"O vecendor foi: {vencedor['nome']}")
 vencedor['modelo'].fit(treino_dados, treino_marcacoes)
 
 # Testa o modelo vencedor com dandos que ele desconhece
